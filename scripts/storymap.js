@@ -8,7 +8,7 @@ $(window).on('load', function() {
   $.get('csv/Options.json', function(options) {
 
     $.get('csv/Chapters.json', function(chapters) {
-      console.log("passe csv")
+      console.log("passe csv nv")
       initMap(
         $.json.toObjects(options),
         $.json.toObjects(chapters)
