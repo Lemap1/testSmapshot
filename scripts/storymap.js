@@ -10,8 +10,8 @@ $(window).on('load', function() {
     $.get('csv/Chapters.json', function(chapters) {
       console.log("passe csv")
       initMap(
-        $.csv.toObjects(options),
-        $.csv.toObjects(chapters)
+        $.json.toObjects(options),
+        $.json.toObjects(chapters)
       )
     }).fail(function(e) { alert('Found Options.csv, but could not read Chapters.csv') });
 
