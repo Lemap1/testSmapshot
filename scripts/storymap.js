@@ -524,14 +524,17 @@ class Chapter{
   }
   static readJSON(json){
 
-      let ret = []
+    let ret = []
+    try{
       let data = JSON.parse(json)
       for(let i = 0; i < data.length; i++){
 
           ret.push(Chapter.toObject(data[i]))
       }
-
-      return ret
+    }catch(e){
+      console.log(e)
+    }
+    return ret
   }
 }
 
