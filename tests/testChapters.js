@@ -66,7 +66,7 @@ class Chapter{
 
   const fs = require('fs');
 
-  fs.readFile('tests/Chapters.json', 'utf8', (err, data) => {
+  fs.readFile('csv/Chapters.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err);
       return;

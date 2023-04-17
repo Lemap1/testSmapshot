@@ -448,7 +448,7 @@ $(window).on('load', function() {
     var attributionHTML = $('.leaflet-control-attribution')[0].innerHTML;
     var credit = 'View <a href="'
       // Show Google Sheet URL if the variable exists and is not empty, otherwise link to Chapters.csv
-      + (typeof googleDocURL !== 'undefined' && googleDocURL ? googleDocURL : './csv/Chapters.csv')
+      + (typeof googleDocURL !== 'undefined' && googleDocURL ? googleDocURL : './csv/Chapters.json')
       + '" target="_blank">data</a>';
 
     var name = getSetting('_authorName');
