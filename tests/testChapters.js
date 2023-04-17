@@ -73,8 +73,6 @@ class Chapter{
     }
 
     let json = JSON.parse(data)
-    let chap = Chapter.toObject(json[0])
-    //console.log(data)
     let chapters = Chapter.readJSON(data)
     console.log(chapters);
   });

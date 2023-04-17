@@ -7,10 +7,10 @@ $(window).on('load', function() {
   // First, try reading Options.csv
   $.get('csv/Options.csv', function(options) {
 
-    $.get('csv/Chapters.csv', function(chapters) {
+    $.get('csv/Chapters.json', function(chapters) {
       initMap(
         $.csv.toObjects(options),
-        $.csv.toObjects(chapters)
+        Chapter.toObjects(chapters)
       )
     }).fail(function(e) { alert('Found Options.csv, but could not read Chapters.csv') });
 
@@ -116,9 +116,9 @@ $(window).on('load', function() {
     for (i in chapters) {
       var c = chapters[i];
 
-      if ( !isNaN(parseFloat(c['Latitude'])) && !isNaN(parseFloat(c['Longitude']))) {
-        var lat = parseFloat(c['Latitude']);
-        var lon = parseFloat(c['Longitude']);
+      if ( !isNaN(parseFloat(c.Latitude)) && !isNaN(parseFloat(c.Longitude))) {
+        var lat = parseFloat(c.Latitude);
+        var lon = parseFloat(c.Longitude);
 
         chapterCount += 1;
 
@@ -126,15 +126,15 @@ $(window).on('load', function() {
           L.marker([lat, lon], {
             icon: L.ExtraMarkers.icon({
               icon: 'fa-number',
-              number: c['Marker'] === 'Numbered'
+              number: c.Marker === 'Numbered'
                 ? chapterCount
-                : (c['Marker'] === 'Plain'
+                : (c.Marker === 'Plain'
                   ? ''
-                  : c['Marker']), 
-              markerColor: c['Marker Color'] || 'blue'
+                  : c.Marker), 
+              markerColor: c.Marker_Color || 'blue'
             }),
-            opacity: c['Marker'] === 'Hidden' ? 0 : 0.9,
-            interactive: c['Marker'] === 'Hidden' ? false : true,
+            opacity: c.Marker === 'Hidden' ? 0 : 0.9,
+            interactive: c.Marker === 'Hidden' ? false : true,
           }
         ));
 
@@ -172,7 +172,7 @@ $(window).on('load', function() {
       // YouTube
       if (c['Media Link'] && c['Media Link'].indexOf('youtube.com/') > -1) {
         media = $('<iframe></iframe>', {
-          src: c['Media Link'],
+          src: c.Media_Link,
           width: '100%',
           height: '100%',
           frameborder: '0',
@@ -197,7 +197,7 @@ $(window).on('load', function() {
         'wav': 'audio',
       }
 
-      var mediaExt = c['Media Link'] ? c['Media Link'].split('.').pop().toLowerCase() : '';
+      var mediaExt = c.Media_Link ? c.Media_Link.split('.').pop().toLowerCase() : '';
       var mediaType = mediaTypes[mediaExt];
 
       if (mediaType) {
@@ -290,10 +290,10 @@ $(window).on('load', function() {
           var c = chapters[i];
 
           // Add chapter's overlay tiles if specified in options
-          if (c['Overlay']) {
+          if (c.Overlay) {
 
-            var opacity = parseFloat(c['Overlay Transparency']) || 1;
-            var url = c['Overlay'];
+            var opacity = parseFloat(c.Overlay_Transparency) || 1;
+            var url = c.Overlay;
 
             if (url.split('.').pop() === 'geojson') {
               $.getJSON(url, function(geojson) {
@@ -310,19 +310,19 @@ $(window).on('load', function() {
                 }).addTo(map);
               });
             } else {
-              overlay = L.tileLayer(c['Overlay'], { opacity: opacity }).addTo(map);
+              overlay = L.tileLayer(c.Overlay, { opacity: opacity }).addTo(map);
             }
 
           }
 
-          if (c['GeoJSON Overlay']) {
-            $.getJSON(c['GeoJSON Overlay'], function(geojson) {
+          if (c.GeoJSON_Overlay) {
+            $.getJSON(c.GeoJSON_Overlay, function(geojson) {
 
               // Parse properties string into a JS object
               var props = {};
 
-              if (c['GeoJSON Feature Properties']) {
-                var propsArray = c['GeoJSON Feature Properties'].split(';');
+              if (c.GeoJSON_Feature_Properties) {
+                var propsArray = c.GeoJSON_Feature_Properties.split(';');
                 var props = {};
                 for (var p in propsArray) {
                   if (propsArray[p].split(':').length === 2) {
@@ -346,9 +346,9 @@ $(window).on('load', function() {
           }
 
           // Fly to the new marker destination if latitude and longitude exist
-          if (c['Latitude'] && c['Longitude']) {
-            var zoom = c['Zoom'] ? c['Zoom'] : CHAPTER_ZOOM;
-            map.flyTo([c['Latitude'], c['Longitude']], zoom, {
+          if (c.Latitude && c.Longitude) {
+            var zoom = c.Zoom ? c.Zoom : CHAPTER_ZOOM;
+            map.flyTo([c.Latitude, c.Longitude], zoom, {
               animate: true,
               duration: 2, // default is 2 seconds
             });
@@ -470,3 +470,69 @@ $(window).on('load', function() {
   }
 
 });
+
+class Chapter{
+     
+  constructor(Chapter, Media_Link, Media_Credit, Media_Credit_Link, Description, Zoom, Marker, Marker_Color, Location, Latitude, Longitude, Overlay, Overlay_Transparency,
+    GeoJSON_Overlay,
+    GeoJSON_Feature_Properties){
+      this.Chapter = Chapter
+      this.Media_Link = Media_Link
+      this.Media_Credit = Media_Credit
+      this.Media_Credit_Link = Media_Credit_Link
+      this.Description = Description
+      this.Zoom = Zoom
+      this.Marker = Marker
+      this.Marker_Color = Marker_Color
+      this.Location = Location
+      this.Latitude = Latitude
+      this.Longitude = Longitude
+      this.Overlay = Overlay
+      this.Overlay_Transparency = Overlay_Transparency
+      this.GeoJSON_Overlay = GeoJSON_Overlay
+      this.GeoJSON_Feature_Properties = GeoJSON_Feature_Properties
+      
+  }
+
+  /**
+   * Convert a JsonObject into a chapter
+   * @param {*} jsonObject the JsonObject to convert
+   * @returns null if it was not able to be converted, else the converted JsonObject
+   */
+  static toObject(jsonObject) {
+    let ret = null;
+    if (jsonObject) {
+      ret = new Chapter(
+        jsonObject.Chapter,
+        jsonObject.Media_Link,
+        jsonObject.Media_Credit,
+        jsonObject.Media_Credit_Link,
+        jsonObject.Description,
+        jsonObject.Zoom,
+        jsonObject.Marker,
+        jsonObject.Marker_Color,
+        jsonObject.Location,
+        jsonObject.Latitude,
+        jsonObject.Longitude,
+        jsonObject.Overlay,
+        jsonObject.Overlay_Transparency,
+        jsonObject.GeoJSON_Overlay,
+        jsonObject.GeoJSON_Feature_Properties
+      );
+    }
+    return ret;
+  }
+  static readJSON(json){
+
+      let ret = []
+      let data = JSON.parse(json)
+      for(let i = 0; i < data.length; i++){
+
+          ret.push(Chapter.toObject(data[i]))
+      }
+
+      return ret
+  }
+}
+
+
