@@ -526,7 +526,7 @@ class Chapter{
 
     let ret = []
     try{
-      let data = JSON.parse(file)
+      let data = file
       for(let i = 0; i < data.length; i++){
 
           ret.push(Chapter.toObject(data[i]))
