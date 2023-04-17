@@ -522,11 +522,11 @@ class Chapter{
     }
     return ret;
   }
-  static readJSON(json){
+  static readJSON(file){
 
     let ret = []
     try{
-      let data = JSON.parse(json)
+      let data = JSON.parse(file)
       for(let i = 0; i < data.length; i++){
 
           ret.push(Chapter.toObject("une erreur : ", data[i]))
