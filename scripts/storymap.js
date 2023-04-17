@@ -524,19 +524,16 @@ class Chapter{
   }
   static readJSON(file){
 
-    console.log('passe')
     let ret = []
     try{
       let data = JSON.parse(file)
       for(let i = 0; i < data.length; i++){
 
-          ret.push(Chapter.toObject("une erreur : ", data[i]))
+          ret.push(Chapter.toObject(data[i]))
       }
     }catch(e){
-      console.log(e)
+      console.log("une erreur : ", e)
     }
     return ret
   }
 }
-
-

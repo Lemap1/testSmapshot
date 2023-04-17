@@ -815,7 +815,6 @@ RegExp.escape= function(s) {
 
       // push the value to a callback if one is defined
       if(!config.callback) {
-        console.log(data)
         return data;
       } else {
         config.callback('', data);
