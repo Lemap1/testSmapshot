@@ -1,0 +1,20 @@
+[
+    {
+      "Address": "Calle de la Electricidad, 49, 28918 Leganés, Madrid",
+      "Country": "es",
+      "Coordinates": "",
+      "Address found": ""
+    },
+    {
+      "Address": "Av México 95-51 Del Carmen, Coyoacán, 04100 Ciudad de Mexico",
+      "Country": "mx",
+      "Coordinates": "",
+      "Address found": ""
+    },
+    {
+      "Address": "Av. Díaz Vélez 4900, Buenos Aires, Argentina",
+      "Country": "ar",
+      "Coordinates": "",
+      "Address found": ""
+    }
+  ]

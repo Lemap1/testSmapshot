@@ -1,0 +1,37 @@
+[
+    {
+      "Address": "55 Forest St, Hartford CT",
+      "Country": "us",
+      "Latitude": 41.7643207,
+      "Longitude": -72.7013414,
+      "Address found": "55 Forest St, Hartford, CT 06105, USA"
+    },
+    {
+      "Address": "1200 Albany Ave, Hartford CT",
+      "Country": "us",
+      "Latitude": 41.7827987,
+      "Longitude": -72.6963229,
+      "Address found": "1200 Albany Ave, Hartford, CT 06112, USA"
+    },
+    {
+      "Address": "Bradley International Airport, Schoephoester Rd, Windsor Locks, CT",
+      "Country": "us",
+      "Latitude": 41.9388735,
+      "Longitude": -72.6860314,
+      "Address found": "Bradley International Airport (BDL), Schoephoester Rd, Windsor Locks, CT 06096, USA"
+    },
+    {
+      "Address": "300 Summit St, Hartford CT",
+      "Country": "us",
+      "Latitude": 41.7473639,
+      "Longitude": -72.6907806,
+      "Address found": "300 Summit St, Hartford, CT 06106, USA"
+    },
+    {
+      "Address": "300 Summit St, Hartford CT",
+      "Country": "us",
+      "Latitude": 41.7473639,
+      "Longitude": -72.6907806,
+      "Address found": "300 Summit St, Hartford, CT 06106, USA"
+    }
+  ]

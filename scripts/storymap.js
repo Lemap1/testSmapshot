@@ -7,7 +7,7 @@ $(window).on('load', function() {
   // First, try reading Options.csv
   $.get('csv/Options.json', function(options) {
 
-    $.get('csv/Chapters.csv', function(chapters) {
+    $.get('csv/Chapters.json', function(chapters) {
       console.log("passe csv")
       initMap(
         $.csv.toObjects(options),
