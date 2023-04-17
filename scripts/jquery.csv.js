@@ -962,7 +962,7 @@ RegExp.escape= function(s) {
     }
   };
 
-  class chapter{
+  class Chapter{
      
     constructor( Chapter, Media_Link, Media_Credit, Media_Credit_Link, Description, Zoom, Marker, Marker_Color, Location, Latitude, Longitude, Overlay, Overlay_Transparency,
       GeoJSON_Overlay,
@@ -985,7 +985,20 @@ RegExp.escape= function(s) {
         
     }
 
+    /**
+     * Convert a JsonObject into a chapter
+     * @param {*} jsonObject the JsonObject to convert
+     * @returns null if it was not able to be converted, else the converted JsonObject
+     */
+    static toObject(jsonObject){
+      let ret = null;
 
+      if(jsonObject != undefined && jsonObject != null){
+        ret = new Chapter(jsonObject.chapter, jsonObject.Description, jsonObject.GeoJSON_Feature_Properties, jsonObject.GeoJSON_Overlay, jsonObject.Latitude, jsonObject.Longitude, jsonObject.Marker, jsonObject.Marker_Color, jsonObject.Media_Credit, jsonObject.Media_Credit_Link, jsonObject.Media_Link, jsonObject.Overlay, jsonObject.Overlay_Transparency, jsonObject.zoom)
+      }
+
+      return ret
+    }
   }
 
   // Maintenance code to maintain backward-compatibility
