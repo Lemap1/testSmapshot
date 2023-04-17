@@ -155,22 +155,22 @@ $(window).on('load', function() {
 
       // Add media source
       var source = '';
-      if (c['Media Credit Link']) {
+      if (c.Media_Credit_Link) {
         source = $('<a>', {
-          text: c['Media Credit'],
-          href: c['Media Credit Link'],
+          text: c.Media_Credit,
+          href: c.Media_Credit_Link,
           target: "_blank",
           class: 'source'
         });
       } else {
         source = $('<span>', {
-          text: c['Media Credit'],
+          text: c.Media_Credit,
           class: 'source'
         });
       }
 
       // YouTube
-      if (c['Media Link'] && c['Media Link'].indexOf('youtube.com/') > -1) {
+      if (c.Media_Link && c.Media_Link.indexOf('youtube.com/') > -1) {
         media = $('<iframe></iframe>', {
           src: c.Media_Link,
           width: '100%',
@@ -202,18 +202,18 @@ $(window).on('load', function() {
 
       if (mediaType) {
         media = $('<' + mediaType + '>', {
-          src: c['Media Link'],
+          src: c.Media_Link,
           controls: mediaType === 'audio' ? 'controls' : '',
-          alt: c['Chapter']
+          alt: c.Chapter
         });
 
         var enableLightbox = getSetting('_enableLightbox') === 'yes' ? true : false;
         if (enableLightbox && mediaType === 'img') {
           var lightboxWrapper = $('<a></a>', {
-            'data-lightbox': c['Media Link'],
-            'href': c['Media Link'],
-            'data-title': c['Chapter'],
-            'data-alt': c['Chapter'],
+            'data-lightbox': c.Media_Link,
+            'href': c.Media_Link,
+            'data-title': c.Chapter,
+            'data-alt': c.Chapter,
           });
           media = lightboxWrapper.append(media);
         }
@@ -224,10 +224,10 @@ $(window).on('load', function() {
       }
 
       container
-        .append('<p class="chapter-header">' + c['Chapter'] + '</p>')
+        .append('<p class="chapter-header">' + c.Chapter + '</p>')
         .append(media ? mediaContainer : '')
         .append(media ? source : '')
-        .append('<p class="description">' + c['Description'] + '</p>');
+        .append('<p class="description">' + c.Description + '</p>');
 
       $('#contents').append(container);
 
