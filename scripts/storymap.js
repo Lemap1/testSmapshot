@@ -524,6 +524,7 @@ class Chapter{
   }
   static readJSON(file){
 
+    console.log('passe')
     let ret = []
     try{
       let data = JSON.parse(file)
