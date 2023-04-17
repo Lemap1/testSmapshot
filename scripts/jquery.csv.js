@@ -815,6 +815,7 @@ RegExp.escape= function(s) {
 
       // push the value to a callback if one is defined
       if(!config.callback) {
+        console.log(data)
         return data;
       } else {
         config.callback('', data);
@@ -960,6 +961,32 @@ RegExp.escape= function(s) {
       return $.csv.fromArrays(output, options, config.callback);
     }
   };
+
+  class chapter{
+     
+    constructor( Chapter, Media_Link, Media_Credit, Media_Credit_Link, Description, Zoom, Marker, Marker_Color, Location, Latitude, Longitude, Overlay, Overlay_Transparency,
+      GeoJSON_Overlay,
+      GeoJSON_Feature_Properties){
+        this.Chapter = Chapter
+        this.Media_Link = Media_Link
+        this.Media_Credit = Media_Credit
+        this.Media_Credit_Link = Media_Credit_Link
+        this.Description = Description
+        this.Zoom = Zoom
+        this.Marker = Marker
+        this.Marker_Color = Marker_Color
+        this.Location = Location
+        this.Latitude = Latitude
+        this.Longitude = Longitude
+        this.Overlay = Overlay
+        this.Overlay_Transparency = Overlay_Transparency
+        this.GeoJSON_Overlay = GeoJSON_Overlay
+        this.GeoJSON_Feature_Properties = GeoJSON_Feature_Properties
+        
+    }
+
+
+  }
 
   // Maintenance code to maintain backward-compatibility
   // Will be removed in release 1.0

@@ -16,34 +16,7 @@ $(window).on('load', function() {
 
   // If not available, try from the Google Sheet
   }).fail(function(e) {
-
-    var parse = function(res) {
-      return Papa.parse(Papa.unparse(res[0].values), {header: true} ).data;
-    }
-
-    // First, try reading data from the Google Sheet
-    if (typeof googleDocURL !== 'undefined' && googleDocURL) {
-
-      if (typeof googleApiKey !== 'undefined' && googleApiKey) {
-
-        var apiUrl = 'https://sheets.googleapis.com/v4/spreadsheets/'
-        var spreadsheetId = googleDocURL.split('/d/')[1].split('/')[0];
-
-        $.when(
-          $.getJSON(apiUrl + spreadsheetId + '/values/Options?key=' + googleApiKey),
-          $.getJSON(apiUrl + spreadsheetId + '/values/Chapters?key=' + googleApiKey),
-        ).then(function(options, chapters) {
-          initMap(parse(options), parse(chapters))
-        })
-
-      } else {
-        alert('You load data from a Google Sheet, you need to add a free Google API key')
-      }
-
-    } else {
-      alert('You need to specify a valid Google Sheet (googleDocURL)')
-    }
-
+    console.log(e)
   })
 
 
