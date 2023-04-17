@@ -8,6 +8,7 @@ $(window).on('load', function() {
   $.get('csv/Options.csv', function(options) {
 
     $.get('csv/Chapters.csv', function(chapters) {
+      console.log("passe csv")
       initMap(
         $.csv.toObjects(options),
         $.csv.toObjects(chapters)
