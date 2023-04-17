@@ -529,7 +529,7 @@ class Chapter{
       let data = JSON.parse(json)
       for(let i = 0; i < data.length; i++){
 
-          ret.push(Chapter.toObject(data[i]))
+          ret.push(Chapter.toObject("une erreur : ", data[i]))
       }
     }catch(e){
       console.log(e)
