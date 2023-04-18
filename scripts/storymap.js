@@ -9,7 +9,7 @@ $(window).on('load', function() {
 
     $.get('csv/Chapters.json', function(chapters) {
       initMap(
-        Settings.toObjects(options),
+        Settings.toObject(options),
         Chapter.readJSON(chapters)
       )
     }).fail(function(e) { alert('Found Options.csv, but could not read Chapters.csv') });
