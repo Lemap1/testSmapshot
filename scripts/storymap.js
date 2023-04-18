@@ -127,10 +127,8 @@ $(window).on('load', function() {
               icon: 'fa-number',
               number: c.Marker === 'Numbered'
                 ? chapterCount
-                : (c.Marker === 'Plain'
-                  ? ''
-                  : c.Marker), 
-              markerColor: c.Marker_Color || 'blue'
+                : (c.Marker === 'Plain' ? '' : c.Marker), 
+                markerColor: c.Marker_Color || 'blue'
             }),
             opacity: c.Marker === 'Hidden' ? 0 : 0.9,
             interactive: c.Marker === 'Hidden' ? false : true,
