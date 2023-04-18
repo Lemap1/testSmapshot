@@ -9,7 +9,7 @@ $(window).on('load', function() {
 
     $.get('csv/Chapters.json', function(chapters) {
       initMap(
-        $.csv.toObjects(options),
+        Settings.toObjects(options),
         Chapter.readJSON(chapters)
       )
     }).fail(function(e) { alert('Found Options.csv, but could not read Chapters.csv') });
@@ -26,9 +26,8 @@ $(window).on('load', function() {
   * {"webpageTitle": "Leaflet Boilerplate", "infoPopupText": "Stuff"}
   */
   function createDocumentSettings(settings) {
-    for (var i in settings) {
-      var setting = settings[i];
-      documentSettings[setting.Setting] = setting.Customize;
+    if(settings){
+      documentSettings = settings
     }
   }
 
@@ -37,7 +36,7 @@ $(window).on('load', function() {
    * getSetting(s) is equivalent to documentSettings[constants.s]
    */
   function getSetting(s) {
-    return documentSettings[constants[s]];
+    return documentSettings[s];
   }
 
   /**
@@ -233,7 +232,7 @@ $(window).on('load', function() {
 
     }
 
-    changeAttribution();
+    //changeAttribution();
 
     /* Change image container heights */
     imgContainerHeight = parseInt(getSetting('_imgContainerHeight'));
@@ -424,6 +423,7 @@ $(window).on('load', function() {
       }, 2000);
     }
 
+    /*
     // Add Google Analytics if the ID exists
     var ga = getSetting('_googleAnalytics');
     if ( ga && ga.length >= 10 ) {
@@ -435,7 +435,7 @@ $(window).on('load', function() {
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', ga);
-    }
+    }*/
 
 
   }
@@ -471,6 +471,9 @@ $(window).on('load', function() {
 
 });
 
+/**
+ * Class that represents a chapter of the storymap
+ */
 class Chapter{
      
   constructor(Chapter, Media_Link, Media_Credit, Media_Credit_Link, Description, Zoom, Marker, Marker_Color, Location, Latitude, Longitude, Overlay, Overlay_Transparency,
@@ -495,7 +498,7 @@ class Chapter{
   }
 
   /**
-   * Convert a JsonObject into a chapter
+   * Convert a json's content into a chapter
    * @param {*} jsonObject the JsonObject to convert
    * @returns null if it was not able to be converted, else the converted JsonObject
    */
@@ -522,6 +525,7 @@ class Chapter{
     }
     return ret;
   }
+
   static readJSON(file){
 
     let ret = []
@@ -535,5 +539,63 @@ class Chapter{
       console.log("une erreur : ", e)
     }
     return ret
+  }
+}
+
+/**
+ * Class that represents the storymap's settings
+ */
+class Settings{
+
+  constructor(Title, Subtitle, Logo, Google_Analytics_Tracking_ID, Basemap_Tiles, Zoom_Controls, Narrative_Background_Color, Narrative_Text_Color, Narrative_Link_Color, Active_Chapter_Background_Color, Media_Container_Height, Pixels_After_Final_Chapter, Enable_Lightbox_for_Images, Author_Name, Author_Email_or_Website, Author_Github_Repo_Link, Code_Credit){
+
+      this.Title = Title
+      this.Subtitle = Subtitle
+      this.Logo  = Logo
+      this.Google_Analytics_Tracking_ID  = Google_Analytics_Tracking_ID
+      this.Basemap_Tiles  = Basemap_Tiles
+      this.Zoom_Controls  = Zoom_Controls
+      this.Narrative_Background_Color  = Narrative_Background_Color
+      this.Narrative_Text_Color  = Narrative_Text_Color
+      this.Narrative_Link_Color  = Narrative_Link_Color
+      this.Active_Chapter_Background_Color  = Active_Chapter_Background_Color
+      this.Media_Container_Height  = Media_Container_Height
+      this.Pixels_After_Final_Chapter  = Pixels_After_Final_Chapter
+      this.Enable_Lightbox_for_Images  = Enable_Lightbox_for_Images
+      this.Author_Name  = Author_Name
+      this.Author_Email_or_Website  = Author_Email_or_Website
+      this.Author_Github_Repo_Link  = Author_Github_Repo_Link
+      this.Code_Crefit  = Code_Credit
+    }
+
+    /**
+   * Convert a JsonObject into a Settings
+   * @param {*} jsonObject the JsonObject to convert
+   * @returns null if it was not able to be converted, else the converted JsonObject
+   */
+  static toObject(jsonObject) {
+    let ret = null;
+    if (jsonObject) {
+      ret = new Settings(
+        Title, 
+        Subtitle, 
+        Logo, 
+        Google_Analytics_Tracking_ID, 
+        Basemap_Tiles, 
+        Zoom_Controls, 
+        Narrative_Background_Color, 
+        Narrative_Text_Color, 
+        Narrative_Link_Color, 
+        Active_Chapter_Background_Color, 
+        Media_Container_Height, 
+        Pixels_After_Final_Chapter, 
+        Enable_Lightbox_for_Images, 
+        Author_Name, 
+        Author_Email_or_Website, 
+        Author_Github_Repo_Link, 
+        Code_Credit
+      );
+    }
+    return ret;
   }
 }

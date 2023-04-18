@@ -1,102 +1,19 @@
-[
-    {
-      "Setting": "Storymap Info",
-      "Customize": "",
-      "Hints": "For help, see tutorial in HandsOnDataViz.org"
-    },
-    {
-      "Setting": "Storymap Title",
-      "Customize": "Leaflet Storymaps Demo",
-      "Hints": ""
-    },
-    {
-      "Setting": "Storymap Subtitle",
-      "Customize": "Add subtitle here<br><small>Scroll down <i class='fa fa-chevron-down'></i></small>",
-      "Hints": "Add your subtitle, or delete that portion"
-    },
-    {
-      "Setting": "Storymap Logo",
-      "Customize": "media/cthumanities-logo.png",
-      "Hints": "Path to a logo image"
-    },
-    {
-      "Setting": "Google Analytics Tracking ID",
-      "Customize": "",
-      "Hints": "Sample format: UA-5488840-29"
-    },
-    {
-      "Setting": "Map Settings",
-      "Customize": "",
-      "Hints": "For help, see tutorial in HandsOnDataViz.org"
-    },
-    {
-      "Setting": "Basemap Tiles",
-      "Customize": "CartoDB.Positron",
-      "Hints": "Drop-down menu for background basemap tiles"
-    },
-    {
-      "Setting": "Zoom Controls",
-      "Customize": "bottomright",
-      "Hints": ""
-    },
-    {
-      "Setting": "Narrative Background Color",
-      "Customize": "",
-      "Hints": ""
-    },
-    {
-      "Setting": "Narrative Text Color",
-      "Customize": "",
-      "Hints": ""
-    },
-    {
-      "Setting": "Narrative Link Color",
-      "Customize": "",
-      "Hints": ""
-    },
-    {
-      "Setting": "Active Chapter Background Color",
-      "Customize": "",
-      "Hints": ""
-    },
-    {
-      "Setting": "Media Container Height",
-      "Customize": 300,
-      "Hints": "Maximum height of the image, in pixels. 200 is default. The image will be fit into the container with its proportions kept (it won't be skewed)."
-    },
-    {
-      "Setting": "Pixels After Final Chapter",
-      "Customize": 600,
-      "Hints": "In pixels. At least 100"
-    },
-    {
-      "Setting": "Enable Lightbox for Images",
-      "Customize": "yes",
-      "Hints": "yes or no"
-    },
-    {
-      "Setting": "Credits",
-      "Customize": "",
-      "Hints": "For help, see tutorial in HandsOnDataViz.org"
-    },
-    {
-      "Setting": "Author Name",
-      "Customize": "PHILIPPE Maël",
-      "Hints": "Appears in map credits as \"View data by...\" (or leave blank)"
-    },
-    {
-      "Setting": "Author Email or Website",
-      "Customize": "",
-      "Hints": "Create link in Author Name by inserting your email or web address (or leave blank)"
-    },
-    {
-      "Setting": "Author GitHub Repo Link",
-      "Customize": "https://github.com/handsondataviz/leaflet-storymaps-with-google-sheets",
-      "Hints": "Insert your code repo URL to appear as link in \"View code...\" (or leave blank)"
-    },
-    {
-      "Setting": "Code Credit",
-      "Customize": "<a href=\"https://handsondataviz.org\">HandsOnDataViz</a>",
-      "Hints": "Appears in credits as \"...code by...\" (or leave blank)"
-    }
-  ]
+{
+    "Title": "Leaflet Storymaps Demo",
+    "Subtitle": "Add subtitle here<br><small>Scroll down <i class='fa fa-chevron-down'></i></small>",
+    "Logo": "media/cthumanities-logo.png", 
+    "Google_Analytics_Tracking_ID": "",
+    "Basemap_Tiles": "CartoDB.Positron",
+    "Zoom_Controls": "bottomright",
+    "Narrative_Background_Color": "",
+    "Narrative_Text_Color": "",
+    "Narrative_Link_Color": "",
+    "Active_Chapter_Background_Color": "",
+    "Media_Container_Height": "300",
+    "Pixels_After_Final_Chapter": "600",
+    "Enable_Lightbox_for_Images": "yes",
+    "Author_Name": "Maël PHILIPPE",
+    "Author_Email_or_Website": "",
+    "Author_Github_Repo_Link": "https://github.com/handsondataviz/leaflet-storymaps-with-google-sheets",
+    "Code_Credit": "<a href='https://handsondataviz.org'>HandsOnDataViz</a>"
+}
