@@ -577,23 +577,23 @@ class Settings{
     let ret = null;
     if (jsonObject) {
       ret = new Settings(
-        Title, 
-        Subtitle, 
-        Logo, 
-        Google_Analytics_Tracking_ID, 
-        Basemap_Tiles, 
-        Zoom_Controls, 
-        Narrative_Background_Color, 
-        Narrative_Text_Color, 
-        Narrative_Link_Color, 
-        Active_Chapter_Background_Color, 
-        Media_Container_Height, 
-        Pixels_After_Final_Chapter, 
-        Enable_Lightbox_for_Images, 
-        Author_Name, 
-        Author_Email_or_Website, 
-        Author_Github_Repo_Link, 
-        Code_Credit
+        jsonObject.Title, 
+        jsonObject.Subtitle, 
+        jsonObject.Logo, 
+        jsonObject.Google_Analytics_Tracking_ID, 
+        jsonObject.Basemap_Tiles, 
+        jsonObject.Zoom_Controls, 
+        jsonObject.Narrative_Background_Color, 
+        jsonObject.Narrative_Text_Color, 
+        jsonObject.Narrative_Link_Color, 
+        jsonObject.Active_Chapter_Background_Color, 
+        jsonObject.Media_Container_Height, 
+        jsonObject.Pixels_After_Final_Chapter, 
+        jsonObject.Enable_Lightbox_for_Images, 
+        jsonObject.Author_Name, 
+        jsonObject.Author_Email_or_Website, 
+        jsonObject.Author_Github_Repo_Link, 
+        jsonObject.Code_Credit
       );
     }
     return ret;
