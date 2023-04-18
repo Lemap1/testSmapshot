@@ -30,13 +30,13 @@ $(window).on('load', function() {
       documentSettings = settings
     }
   }
-
+  
   /**
    * Returns the value of a setting s
    * getSetting(s) is equivalent to documentSettings[constants.s]
    */
   function getSetting(s) {
-    return documentSettings[s];
+    return documentSettings[constants[s]];
   }
 
   /**
@@ -442,6 +442,7 @@ $(window).on('load', function() {
   /**
    * Changes map attribution (author, GitHub repo, email etc.) in bottom-right
    */
+  /*
   function changeAttribution() {
     var attributionHTML = $('.leaflet-control-attribution')[0].innerHTML;
     var credit = 'View <a href="'
@@ -465,7 +466,7 @@ $(window).on('load', function() {
     if (getSetting('_codeCredit')) credit += ' by ' + getSetting('_codeCredit');
     credit += ' with ';
     $('.leaflet-control-attribution')[0].innerHTML = credit + attributionHTML;
-  }
+  }*/
 
 });
 
