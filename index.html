@@ -37,6 +37,17 @@
 </head>
 
 <body>
+  <!--select layout-->
+  <div id="layout-switcher">
+		<label for="roadmap">Roadmap</label>
+		<input type="radio" name="layout" id="roadmap" value="roadmap" checked onclick="changeLayout()">
+		<label for="satellite">Satellite</label>
+		<input type="radio" name="layout" id="satellite" value="satellite" onclick="changeLayout()">
+		<label for="hybrid">Terrain</label>
+		<input type="radio" name="layout" id="terrain" value="terrain" onclick="changeLayout()">
+    <label for="terrain">Swisstopo</label>
+		<input type="radio" name="layout" id="swisstopo" value="swisstopo" onclick="changeLayout()">
+	</div>
 
   <div id="title">
     <div id="logo"></div>
@@ -57,7 +68,7 @@
     var map = L.map('map', {
       center: [0, 0],
       zoom: 1,
-      scrollWheelZoom: false,
+      scrollWheelZoom: true,
       zoomControl: false,
       tap: false
     });
@@ -68,6 +79,43 @@
   <script type="text/javascript" src="scripts/constants.js"></script>
   <script type="text/javascript" src="scripts/jquery.csv.js"></script>
   <script type="text/javascript" src="scripts/storymap.js"></script>
+  <script>const radioButtons = document.querySelectorAll('input[type="radio"]');
 
+    document.addEventListener('keydown', event => {
+      if (event.target.tagName === 'INPUT' && event.target.type === 'radio') {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+          event.preventDefault();
+        }
+      }
+      else {
+        if (event.key === 'ArrowUp') {
+          for (let i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+              if (i === 0) {
+                radioButtons[radioButtons.length - 1].checked = false;
+              }
+              else {
+                radioButtons[i - 1].checked = false;
+              }
+              break;
+            }
+          }
+        }
+        else if (event.key === 'ArrowDown') {
+          for (let i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+              if (i === radioButtons.length - 1) {
+                radioButtons[0].checked = false;
+              }
+              else {
+                radioButtons[i + 1].checked = false;
+              }
+              break;
+            }
+          }
+        }
+      }
+    });
+    </script>
 </body>
 </html>

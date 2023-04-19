@@ -7,10 +7,11 @@ $(window).on('load', function() {
   // First, try reading Options.csv
   $.get('csv/Options.csv', function(options) {
 
-    $.get('csv/Chapters.json', function(chapters) {
+    $.get('json/Chapters.json', function(chapters) {
+
       initMap(
         $.csv.toObjects(options),
-        Chapter.readJSON(chapters)
+        chapters
       )
     }).fail(function(e) { alert('Found Options.csv, but could not read Chapters.csv') });
 
@@ -19,18 +20,17 @@ $(window).on('load', function() {
     console.log(e)
   })
 
-
-
   /**
   * Reformulates documentSettings as a dictionary, e.g.
   * {"webpageTitle": "Leaflet Boilerplate", "infoPopupText": "Stuff"}
   */
   function createDocumentSettings(settings) {
-    if(settings){
-      documentSettings = settings
+    for (var i in settings) {
+      var setting = settings[i];
+      documentSettings[setting.Setting] = setting.Customize;
     }
   }
-  
+
   /**
    * Returns the value of a setting s
    * getSetting(s) is equivalent to documentSettings[constants.s]
@@ -82,12 +82,20 @@ $(window).on('load', function() {
     // Load tiles
     addBaseMap();
 
+    /**
+     * With overlay
+     */
+    /*
+    imageBounds = [[5.013926957923385, 45.35600133779394], [11.477436312994008, 48.27502358353741]]
+    L.imageOverlay("https://wmts{s}.geo.admin.ch/1.0.0/ch.swisstopo.swissimage-product/default/current/4326/{z}/{x}/{y}.jpeg", imageBounds).addTo(map);
     // Add zoom controls if needed
     if (getSetting('_zoomControls') !== 'off') {
       L.control.zoom({
         position: getSetting('_zoomControls')
       }).addTo(map);
-    }
+    }*/
+
+
 
     var markers = [];
 
@@ -112,15 +120,17 @@ $(window).on('load', function() {
     var overlay;  // URL of the overlay for in-focus chapter
     var geoJsonOverlay;
 
+    chapters = jsonToObject(chapters)
+    .then(chapters =>{
     for (i in chapters) {
       var c = chapters[i];
-
+  
       if ( !isNaN(parseFloat(c.Latitude)) && !isNaN(parseFloat(c.Longitude))) {
         var lat = parseFloat(c.Latitude);
         var lon = parseFloat(c.Longitude);
-
+    
         chapterCount += 1;
-
+    
         markers.push(
           L.marker([lat, lon], {
             icon: L.ExtraMarkers.icon({
@@ -134,22 +144,22 @@ $(window).on('load', function() {
             interactive: c.Marker === 'Hidden' ? false : true,
           }
         ));
-
+    
       } else {
         markers.push(null);
       }
-
+    
       // Add chapter container
       var container = $('<div></div>', {
         id: 'container' + i,
         class: 'chapter-container'
       });
-
-
+    
+    
       // Add media and credits: YouTube, audio, or image
       var media = null;
       var mediaContainer = null;
-
+    
       // Add media source
       var source = '';
       if (c.Media_Credit_Link) {
@@ -165,7 +175,7 @@ $(window).on('load', function() {
           class: 'source'
         });
       }
-
+    
       // YouTube
       if (c.Media_Link && c.Media_Link.indexOf('youtube.com/') > -1) {
         media = $('<iframe></iframe>', {
@@ -176,12 +186,12 @@ $(window).on('load', function() {
           allow: 'autoplay; encrypted-media',
           allowfullscreen: 'allowfullscreen',
         });
-
+    
         mediaContainer = $('<div></div>', {
           class: 'img-container'
         }).append(media).after(source);
       }
-
+    
       // If not YouTube: either audio or image
       var mediaTypes = {
         'jpg': 'img',
@@ -193,17 +203,17 @@ $(window).on('load', function() {
         'ogg': 'audio',
         'wav': 'audio',
       }
-
+    
       var mediaExt = c.Media_Link ? c.Media_Link.split('.').pop().toLowerCase() : '';
       var mediaType = mediaTypes[mediaExt];
-
+    
       if (mediaType) {
         media = $('<' + mediaType + '>', {
           src: c.Media_Link,
           controls: mediaType === 'audio' ? 'controls' : '',
           alt: c.Chapter
         });
-
+    
         var enableLightbox = getSetting('_enableLightbox') === 'yes' ? true : false;
         if (enableLightbox && mediaType === 'img') {
           var lightboxWrapper = $('<a></a>', {
@@ -214,20 +224,19 @@ $(window).on('load', function() {
           });
           media = lightboxWrapper.append(media);
         }
-
+    
         mediaContainer = $('<div></div', {
           class: mediaType + '-container'
         }).append(media).after(source);
       }
-
+    
       container
         .append('<p class="chapter-header">' + c.Chapter + '</p>')
         .append(media ? mediaContainer : '')
         .append(media ? source : '')
         .append('<p class="description">' + c.Description + '</p>');
-
+    
       $('#contents').append(container);
-
     }
 
     //changeAttribution();
@@ -421,54 +430,62 @@ $(window).on('load', function() {
       }, 2000);
     }
 
-    /*
-    // Add Google Analytics if the ID exists
-    var ga = getSetting('_googleAnalytics');
-    if ( ga && ga.length >= 10 ) {
-      var gaScript = document.createElement('script');
-      gaScript.setAttribute('src','https://www.googletagmanager.com/gtag/js?id=' + ga);
-      document.head.appendChild(gaScript);
+    const swissImageLayer = L.tileLayer('http://wmts{s}.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/4326/{z}/{x}/{y}.png', {
+      subdomains: '56789',
+      minZoom: 8,
+      maxZoom: 17,
+      attribution: '<a href="//www.swisstopo.admin.ch/internet/swisstopo/en/home.html">swisstopo</a>'
+    }).addTo(map);
+  }); 
+  }
+});
 
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', ga);
-    }*/
+/**
+ * Function caled to change the map's layout
+ * @param {*} layout 
+ */
+function changeLayout(){
+  var wmsLayerSat = L.tileLayer.wms('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    layers: 'TOPO-OSM-WMS'
+  })
+  var wmsLayerRoad = L.tileLayer.wms('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    layers: 'TOPO-OSM-WMS'
+  })
+  var wmsLayerSwiss = L.tileLayer.wms('https://wmts{s}.geo.admin.ch/1.0.0/ch.swisstopo.swissimage-product/default/current/4326/{z}/{x}/{y}.jpeg', {
+    layers: 'TOPO-OSM-WMS'
+  })
+  var wmsLayerTerr = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+    layers: 'TOPO-OSM-WMS'
+  })
+  if(document.getElementById("satellite").checked){
 
+    map.removeLayer(wmsLayerSwiss)
+    map.removeLayer(wmsLayerTerr)
+    map.removeLayer(wmsLayerRoad)
+    map.removeLayer(wmsLayerSat)
+    wmsLayerSat.addTo(map);
+  }else if(document.getElementById("roadmap").checked){
+    map.removeLayer(wmsLayerSwiss)
+    map.removeLayer(wmsLayerTerr)
+    map.removeLayer(wmsLayerRoad)
+    map.removeLayer(wmsLayerSat)
+    wmsLayerRoad.addTo(map);
+  }else if(document.getElementById("swisstopo").checked){
+    map.removeLayer(wmsLayerSwiss)
+    map.removeLayer(wmsLayerTerr)
+    map.removeLayer(wmsLayerRoad)
+    map.removeLayer(wmsLayerSat)
+    wmsLayerSwiss.addTo(map);
+  }else if(document.getElementById("terrain").checked){
+    map.removeLayer(wmsLayerSwiss)
+    map.removeLayer(wmsLayerTerr)
+    map.removeLayer(wmsLayerRoad)
+    map.removeLayer(wmsLayerSat)
 
+    wmsLayerTerr.addTo(map);
   }
 
-
-  /**
-   * Changes map attribution (author, GitHub repo, email etc.) in bottom-right
-   */
-  /*
-  function changeAttribution() {
-    var attributionHTML = $('.leaflet-control-attribution')[0].innerHTML;
-    var credit = 'View <a href="'
-      // Show Google Sheet URL if the variable exists and is not empty, otherwise link to Chapters.csv
-      + (typeof googleDocURL !== 'undefined' && googleDocURL ? googleDocURL : './csv/Chapters.json')
-      + '" target="_blank">data</a>';
-
-    var name = getSetting('_authorName');
-    var url = getSetting('_authorURL');
-
-    if (name && url) {
-      if (url.indexOf('@') > 0) { url = 'mailto:' + url; }
-      credit += ' by <a href="' + url + '">' + name + '</a> | ';
-    } else if (name) {
-      credit += ' by ' + name + ' | ';
-    } else {
-      credit += ' | ';
-    }
-
-    credit += 'View <a href="' + getSetting('_githubRepo') + '">code</a>';
-    if (getSetting('_codeCredit')) credit += ' by ' + getSetting('_codeCredit');
-    credit += ' with ';
-    $('.leaflet-control-attribution')[0].innerHTML = credit + attributionHTML;
-  }*/
-
-});
+}
 
 /**
  * Class that represents a chapter of the storymap
@@ -541,60 +558,63 @@ class Chapter{
   }
 }
 
-/**
- * Class that represents the storymap's settings
- */
-class Settings{
-
-  constructor(Title, Subtitle, Logo, Google_Analytics_Tracking_ID, Basemap_Tiles, Zoom_Controls, Narrative_Background_Color, Narrative_Text_Color, Narrative_Link_Color, Active_Chapter_Background_Color, Media_Container_Height, Pixels_After_Final_Chapter, Enable_Lightbox_for_Images, Author_Name, Author_Email_or_Website, Author_Github_Repo_Link, Code_Credit){
-
-      this.Title = Title
-      this.Subtitle = Subtitle
-      this.Logo  = Logo
-      this.Google_Analytics_Tracking_ID  = Google_Analytics_Tracking_ID
-      this.Basemap_Tiles  = Basemap_Tiles
-      this.Zoom_Controls  = Zoom_Controls
-      this.Narrative_Background_Color  = Narrative_Background_Color
-      this.Narrative_Text_Color  = Narrative_Text_Color
-      this.Narrative_Link_Color  = Narrative_Link_Color
-      this.Active_Chapter_Background_Color  = Active_Chapter_Background_Color
-      this.Media_Container_Height  = Media_Container_Height
-      this.Pixels_After_Final_Chapter  = Pixels_After_Final_Chapter
-      this.Enable_Lightbox_for_Images  = Enable_Lightbox_for_Images
-      this.Author_Name  = Author_Name
-      this.Author_Email_or_Website  = Author_Email_or_Website
-      this.Author_Github_Repo_Link  = Author_Github_Repo_Link
-      this.Code_Crefit  = Code_Credit
-    }
-
-    /**
-   * Convert a JsonObject into a Settings
-   * @param {*} jsonObject the JsonObject to convert
-   * @returns null if it was not able to be converted, else the converted JsonObject
+  /**
+   * Synchronous version
    */
-  static toObject(jsonObject) {
-    let ret = null;
-    if (jsonObject) {
-      ret = new Settings(
-        jsonObject.Title, 
-        jsonObject.Subtitle, 
-        jsonObject.Logo, 
-        jsonObject.Google_Analytics_Tracking_ID, 
-        jsonObject.Basemap_Tiles, 
-        jsonObject.Zoom_Controls, 
-        jsonObject.Narrative_Background_Color, 
-        jsonObject.Narrative_Text_Color, 
-        jsonObject.Narrative_Link_Color, 
-        jsonObject.Active_Chapter_Background_Color, 
-        jsonObject.Media_Container_Height, 
-        jsonObject.Pixels_After_Final_Chapter, 
-        jsonObject.Enable_Lightbox_for_Images, 
-        jsonObject.Author_Name, 
-        jsonObject.Author_Email_or_Website, 
-        jsonObject.Author_Github_Repo_Link, 
-        jsonObject.Code_Credit
-      );
-    }
-    return ret;
+  function requestAPI(url) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            resolve(response);
+          } catch (error) {
+            reject(new Error(`Failed to parse JSON response: ${error.message}`));
+          }
+        } else {
+          reject(new Error(`Request failed with status ${xhr.status}`));
+        }
+      };
+      xhr.onerror = () => {
+        reject(new Error('Failed to make request'));
+      };
+      xhr.send();
+    });
   }
-}
+
+
+
+
+  async function jsonToObject(jsonList) {
+    const promises = jsonList.map(async (item) => {
+      const data = await requestAPI(
+        `https://smapshot.heig-vd.ch/api/v1/images/${item.id}/attributes/?lang=fr`
+      );
+      const chapter = new Chapter(
+        data.title,
+        data.media.image_url,
+        data.license,
+        item.Media_Credit_Link,
+        item.Description,
+        item.Zoom,
+        item.Marker,
+        item.Marker_Color,
+        item.Location,
+        data.pose.latitude,
+        data.pose.longitude,
+        item.Overlay,
+        item.Overlay_Transparency,
+        item.GeoJSON_Overlay,
+        item.GeoJSON_Feature_Properties
+      );
+      return chapter;
+    });
+  
+    const chapters = await Promise.all(promises);
+  
+    return chapters;
+  }
+
