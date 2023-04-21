@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "proj4": "^2.9.0",
+    "proj4leaflet": "^1.0.2",
     "sync-request": "^6.1.0",
     "xmlhttprequest": "^1.8.0"
   }

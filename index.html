@@ -50,6 +50,14 @@
 	</div>
 
   <div id="title">
+    <button><</button>
+    <select id="actualChapter" onchange="changeChapters()">
+      <option value="Chapters.json">Chapitre 1</option>
+      <option value="Chapters2.json">Chapitre 2</option>
+
+    </select>
+    <button>></button>
+
     <div id="logo"></div>
     <div id="header"></div>
   </div>
@@ -70,7 +78,8 @@
       zoom: 1,
       scrollWheelZoom: true,
       zoomControl: false,
-      tap: false
+      tap: false,
+      crs: L.CRS.EPSG4326
     });
   </script>
 
@@ -79,9 +88,13 @@
   <script type="text/javascript" src="scripts/constants.js"></script>
   <script type="text/javascript" src="scripts/jquery.csv.js"></script>
   <script type="text/javascript" src="scripts/storymap.js"></script>
-  <script>const radioButtons = document.querySelectorAll('input[type="radio"]');
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.0/proj4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
+  <script>
 
-    document.addEventListener('keydown', event => {
+    
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    document.addEventListener('keydown', event => {//used to disable when arrow up or down clicked to change the layout for the map
       if (event.target.tagName === 'INPUT' && event.target.type === 'radio') {
         if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
           event.preventDefault();
@@ -116,6 +129,8 @@
         }
       }
     });
-    </script>
+    
+
+  </script>
 </body>
 </html>
