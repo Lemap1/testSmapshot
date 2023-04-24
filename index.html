@@ -8,12 +8,8 @@
   <title>Leaflet Storymaps with Google Sheets Template</title>
 
   <!-- Load Leaflet CSS and JS-->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 
   <!-- Load Leaflet basemap providers -->
   <script src="https://unpkg.com/leaflet-providers@1.10.2/leaflet-providers.js"></script>
@@ -33,45 +29,61 @@
   <link rel="stylesheet" href="markers/leaflet.extra-markers.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/style-desktop.css">
-  <link rel="stylesheet" href="css/loader.css">
 </head>
 
 <body>
-  <!--select layout-->
-  <div id="layout-switcher">
-		<label for="roadmap">Roadmap</label>
-		<input type="radio" name="layout" id="roadmap" value="roadmap" checked onclick="changeLayout()">
-		<label for="satellite">Satellite</label>
-		<input type="radio" name="layout" id="satellite" value="satellite" onclick="changeLayout()">
-		<label for="hybrid">Terrain</label>
-		<input type="radio" name="layout" id="terrain" value="terrain" onclick="changeLayout()">
-    <label for="terrain">Swisstopo</label>
-		<input type="radio" name="layout" id="swisstopo" value="swisstopo" onclick="changeLayout()">
-	</div>
 
-  <div id="title">
-    <button><</button>
-    <select id="actualChapter" onchange="changeChapters()">
-      <option value="Chapters.json">Chapitre 1</option>
-      <option value="Chapters2.json">Chapitre 2</option>
-
-    </select>
-    <button>></button>
-
-    <div id="logo"></div>
-    <div id="header"></div>
-  </div>
-
-  <div id="narration">
-    <div id="contents">
-      <div id="top"></div>
+  
+  <div id="column">
+    <div id="title">
+      <button onclick="go('left')"><</button>
+      <select id="actualChapter" onchange="changeChapters()">
+        <option value="Chapters.json">Chapitre 1</option>
+        <option value="Chapters2.json">Chapitre 2</option>
+  
+      </select>
+      <button onclick="go('right')">></button>
+  
+      <div id="logo"></div>
+      <div id="header"></div>
+    </div>
+  
+    <div id="narration">
+      <div id="contents">
+        <div id="top"></div>
+      </div>
     </div>
   </div>
 
-  <div class="loader">Loading...</div>
+  <!--Layers selection-->
+  <div id="layer-toggle">
+    <img src="media/roadmap.png" alt="Map layer toggle button">
+  </div>
+  
+  <div id="layer-popup">
+    <div id="swisstopo-satellite">
+      <img src="media/swisstopo-satellite.png">
+      <span>Satellite</span>
+    </div>
+    <div id="roadmap-layer">
+      <img src="media/roadmap.png">
+      <span>Roadmap</span>
+    </div>
+    <div id="swisstopoBW">
+      <img src="media/swisstopoBW.png">
+      <span>Swisstopo noir et blanc</span>
+    </div>
+  </div>
+
   <div id="map"></div>
 
-  <script type="text/javascript">
+  <script type="text/javascript" src="google-doc-url.js"></script>
+  <script type="text/javascript" src="markers/leaflet.extra-markers.min.js"></script>
+  <script type="text/javascript" src="scripts/constants.js"></script>
+  <script type="text/javascript" src="scripts/jquery.csv.js"></script>
+  <script type="text/javascript" src="scripts/storymap.js"></script>
+
+  <script>
     // Create the Leaflet map with a generic start point
     var map = L.map('map', {
       center: [0, 0],
@@ -79,57 +91,102 @@
       scrollWheelZoom: true,
       zoomControl: false,
       tap: false,
-      crs: L.CRS.EPSG4326
+      crs: L.CRS.EPSG3857
     });
-  </script>
-
-  <script type="text/javascript" src="google-doc-url.js"></script>
-  <script type="text/javascript" src="markers/leaflet.extra-markers.min.js"></script>
-  <script type="text/javascript" src="scripts/constants.js"></script>
-  <script type="text/javascript" src="scripts/jquery.csv.js"></script>
-  <script type="text/javascript" src="scripts/storymap.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.0/proj4.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
-  <script>
-
     
-    const radioButtons = document.querySelectorAll('input[type="radio"]');
     document.addEventListener('keydown', event => {//used to disable when arrow up or down clicked to change the layout for the map
-      if (event.target.tagName === 'INPUT' && event.target.type === 'radio') {
-        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-          event.preventDefault();
-        }
+
+      let column = document.getElementById("column") 
+
+      console.log("focus sur : " + document.activeElement)
+      console.log("key : " + event.key)
+      console.log("est child : " + column.contains(document.activeElement))
+      console.log("focus : " + column === document.activeElement)
+      if (event.key === 'ArrowLeft' && (column === document.activeElement || column.contains(document.activeElement))) {
+        console.log("passe")
+
+        go("left")
       }
-      else {
-        if (event.key === 'ArrowUp') {
-          for (let i = 0; i < radioButtons.length; i++) {
-            if (radioButtons[i].checked) {
-              if (i === 0) {
-                radioButtons[radioButtons.length - 1].checked = false;
-              }
-              else {
-                radioButtons[i - 1].checked = false;
-              }
-              break;
-            }
-          }
-        }
-        else if (event.key === 'ArrowDown') {
-          for (let i = 0; i < radioButtons.length; i++) {
-            if (radioButtons[i].checked) {
-              if (i === radioButtons.length - 1) {
-                radioButtons[0].checked = false;
-              }
-              else {
-                radioButtons[i + 1].checked = false;
-              }
-              break;
-            }
-          }
-        }
+      else if (event.key === 'ArrowRight' && (column === document.activeElement || column.contains(document.activeElement))) {
+        console.log("passe")
+
+        go("right")
       }
+      
     });
     
+    /**
+    *Method used for the buttons to change the chapter displayed
+    * @param direction the direction to go "left" or "right"
+    */
+    function go(direction) {
+
+      if (direction) {
+        if (direction === "left") {
+
+          let select = document.getElementById("actualChapter");
+          let index = select.selectedIndex;
+
+          if (index > 0) {
+            select.selectedIndex -= 1;
+            changeChapters()
+          } else {
+            select.selectedIndex = select.options.length - 1;
+            changeChapters()
+          }
+
+        } else if (direction === "right") {
+
+          let select = document.getElementById("actualChapter");
+          let index = select.selectedIndex;
+          let max = select.options.length - 1;
+
+          if (index < max) {
+            select.selectedIndex += 1;
+            changeChapters()
+          } else {
+            select.selectedIndex = 0;
+            changeChapters()
+          }
+        }
+      }
+    }
+   
+    
+    const layerToggle = document.getElementById('layer-toggle');
+    const layerPopup = document.getElementById('layer-popup');
+    const baseImage = layerToggle.querySelector('img');
+    baseImage.setAttribute('src', 'media/roadmap.png');
+    
+    layerToggle.addEventListener('click', () => {
+      layerPopup.style.display = layerPopup.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    const satelliteLayer = document.getElementById('swisstopo-satellite');
+    const roadmapLayer = document.getElementById('roadmap-layer');
+    const swisstopobw = document.getElementById('swisstopoBW');
+    
+    satelliteLayer.addEventListener('click', () => {
+      baseImage.setAttribute('src', 'media/swisstopo-satellite.png');
+      layerPopup.style.display = 'none';
+      changeLayer("satellite")
+
+    });
+    
+    roadmapLayer.addEventListener('click', () => {
+      baseImage.setAttribute('src', 'media/roadmap.png');
+      layerPopup.style.display = 'none';
+      changeLayer("roadmap")
+    });
+    
+    swisstopobw.addEventListener('click', () => {
+      baseImage.setAttribute('src', 'media/swisstopoBW.png');
+      layerPopup.style.display = 'none';
+      changeLayer("swisstopoBW")
+    });
+    
+    addEventListener("focus", (event) => {});
+
 
   </script>
 </body>

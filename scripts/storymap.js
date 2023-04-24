@@ -1,6 +1,7 @@
 var documentSettings = {};
 var markers = [];
 var bounds = [];
+var zoom;
 
 
 // Some constants, such as default settings
@@ -192,7 +193,7 @@ function initMap(options, chapters) {
   // For each block (chapter), calculate how many pixels above it
   pixelsAbove[0] = -100;
   for (i = 1; i < chapters.length; i++) {
-    pixelsAbove[i] = pixelsAbove[i-1] + $('div#container' + (i-1)).height() + chapterContainerMargin;
+    pixelsAbove[i] = pixelsAbove[i-1] + $('div#container' + (i-1)).height() + ($(document).height()* 0.05);
   }
   pixelsAbove.push(Number.MAX_VALUE);
 
@@ -207,7 +208,7 @@ function initMap(options, chapters) {
     for (var i = 0; i < pixelsAbove.length - 1; i++) {
 
       if ( currentPosition >= pixelsAbove[i]
-        && currentPosition < (pixelsAbove[i+1] - 2 * chapterContainerMargin)
+        && currentPosition < (pixelsAbove[i+1] - 2 * ($(document).height()* 0.05))
         && currentlyInFocus != i
       ) {
 
@@ -223,12 +224,12 @@ function initMap(options, chapters) {
         markActiveColor(currentlyInFocus);
 
         // Remove overlay tile layer if needed
-        if (map.hasLayer(overlay)) {
+        if (overlay && map.hasLayer(overlay)) {
           map.removeLayer(overlay);
         }
 
         // Remove GeoJson Overlay tile layer if needed
-        if (map.hasLayer(geoJsonOverlay)) {
+        if (geoJsonOverlay && map.hasLayer(geoJsonOverlay)) {
           map.removeLayer(geoJsonOverlay);
         }
 
@@ -367,7 +368,17 @@ function initMap(options, chapters) {
       scrollTop: $('#container' + containerId).offset().top
     }, 2000);
   }
-}); 
+
+  // Add zoom controls if needed
+  if (!zoom) {
+    if (getSetting('_zoomControls') !== 'off') {
+      zoom = L.control.zoom({
+        position: getSetting('_zoomControls')
+      }).addTo(map);
+    }
+  }
+
+  }); 
 }
 
   /**
@@ -416,28 +427,33 @@ function initMap(options, chapters) {
  * Function caled to change the map's layout
  * @param {*} layout 
  */
-function changeLayout(){
+function changeLayer(layer){
 
-  if(document.getElementById("satellite").checked){ //set the layer to satellitre
+  if(layer){
 
-    cleanLayers()
-    L.tileLayer('https://api.maptiler.com/maps/hybrid/256/tiles.json?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
+    if(layer === "satellite"){ //set the layer to satellitre
 
-  }else if(document.getElementById("roadmap").checked){ //set layer to roadmap
-
-    cleanLayers()
-    L.tileLayer('https://api.maptiler.com/maps/basic-4326/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
-
-  }else if(document.getElementById("swisstopo").checked){ //set layer to swisstopo
-
-    cleanLayers()
-    var swisstopo = L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/4326/{z}/{x}/{y}.jpeg', {}).addTo(map)
-    
-  }else if(document.getElementById("terrain").checked){ //set layer to terrain
-
-    cleanLayers()
-    L.tileLayer.wms('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpeg', {crs: L.CRS.EPSG4326}).addTo(map);
+      cleanLayers()
+      L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg', {}).addTo(map);
+  
+    }else if(layer === "roadmap"){ //set layer to roadmap
+  
+      cleanLayers()
+      L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
+  
+    }else if(layer === "swisstopoBW"){ //set layer to swisstopo
+  
+      cleanLayers()
+      L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
+      L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/3857/{z}/{x}/{y}.jpeg', {}).addTo(map)
+      
+    }else if(layer === "terrain"){ //set layer to terrain
+  
+      cleanLayers()
+      L.tileLayer.wms('wmts{s}.geo.admin.ch/1.0.0/ch.swisstopo.hiks-dufour/default/18650101/3857/{z}/{x}/{y}.png', {}).addTo(map);
+    }
   }
+
 }
 
 /**
@@ -492,6 +508,7 @@ function addMarker(c, chapterCount){
 function changeChapters(){
   let select = document.getElementById("actualChapter");
   let chapter = select.value;
+  let index = select.selectedIndex
   let regex = /^[a-zA-Z0-9_-]+\.json$/;
 
   if(regex.test(chapter)){
@@ -504,13 +521,13 @@ function changeChapters(){
     let narration = document.getElementById("narration")
     console.log("passe1")
     title.innerHTML = `
-    <button><</button>
+    <button onclick="go('left')"><</button>
     <select id="actualChapter" onchange="changeChapters()">
-      <option value="Chapitre1.json">Chapitre 1</option>
-      <option value="Chapitre2.json">Chapitre 2</option>
+      <option value="Chapters.json">Chapitre 1</option>
+      <option value="Chapters2.json">Chapitre 2</option>
 
     </select>
-    <button>></button>
+    <button onclick="go('right')">></button>
 
     <div id="logo"></div>
     <div id="header"></div>`
@@ -526,8 +543,10 @@ function changeChapters(){
     // First, try reading Options.csv
     $.get('csv/Options.csv', function(options) {
       $.get('json/'+chapter, function(chapters) {
-        let newSelect = document.getElementById("actualChapter");
-        newSelect.value = chapter
+        var selectElement = document.getElementById("actualChapter");
+
+        // Sélectionnez l'option avec la valeur "Chapters2.json"
+        selectElement.selectedIndex = index;
 
         initMap(
           $.csv.toObjects(options),
