@@ -203,21 +203,25 @@ h2 {
   position: fixed;
   z-index: 99;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
+
 }
 
 #layer-toggle img {
   top: 0;
   left: 0;
   z-index: 100;
+  width: 100%;
+  height: 100%;
 }
-
 #layer-popup {
   left: 29%;
   bottom: 5%;
-  width: 70vw;
-  height: 40vw;
+  width: 50vw;
+  height: 30vw;
   background-color: white;
-  border-radius: 0;
+  border-radius: 5px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   display: none;
   z-index: 101;
@@ -234,6 +238,7 @@ h2 {
   width: 100%;
   height: 50%;
   border: none;
+
 }
 
 /* Style pour chaque cellule de tableau */
@@ -242,16 +247,17 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: calc(100% / 6); /* Three cells per row */
+  width: calc(100% / 6); /* Six cells per row */
   border: none; /* Supprime les bordures */
   padding: 2%;
   box-sizing: border-box; /* Include padding in width calculation */
+
 }
 
 /* Style pour chaque nom */
 .cell span {
-  margin-top: 9%;
   margin-bottom: 0;
+  margin-top: 2%;
   font-size: 1.2rem;
   text-align: center;
 }
@@ -263,3 +269,4 @@ h2 {
   height: auto;
   vertical-align: middle;
 }
+

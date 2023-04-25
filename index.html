@@ -63,36 +63,36 @@
 
 
   <div id="layer-popup">
+    <h1 style="margin-left: 5%; margin-top:3%;">Suisse :</h1>
     <div class="grid">
-      <div class="cell">
-        <img src="media/swisstopoBW.png" alt="Image 1" />
+      <div id="swisstopoBW" class="cell">
+        <img src="media/swisstopoBW.png"/>
         <span>Swisstopo noir & blanc</span>
       </div>
-      <div class="cell">
-        <img src="media/swisstopoColor.png" alt="Image 2" />
+      <div id="swisstopoColor" class="cell">
+        <img src="media/swisstopoColor.png"/>
         <span>Swisstopo couleur</span>
       </div>
-      <div class="cell">
-        <img src="media/swissimageCurrent.png" alt="Image 3" />
+      <div id="swisstopo-satellite" class="cell">
+        <img src="media/swissimageCurrent.png"/>
         <span>Swissimage actuel</span>
       </div>
-      <div class="cell">
-        <img src="media/swissimage1946.png" alt="Image 4" />
+      <div id="swissimage1946" class="cell">
+        <img src="media/swissimage1946.png"/>
         <span>Swissimage 1946</span>
       </div>
-      <div class="cell">
-        <img src="media/dufour.png" alt="Image 4" />
-        <span>Dufour</span>
+      <div id="dufour" class="cell">
+        <img src="media/dufour.png"/>
+        <span>Dufour 1865</span>
       </div>
-      <div class="cell">
-        <img src="media/king-1963-npr.jpg" alt="Image 4" />
+      <div id="siegfied" class="cell">
+        <img src="media/king-1963-npr.jpg"/>
         <span>Siegfied</span>
       </div>
     </div>
-    <br><h1>Monde</h1>
+    <h1 style="margin-left: 5%;">Monde :</h1>
     <div id="grid">
-
-      <div class="cell">
+      <div id="roadmap" class="cell">
         <img src="media/roadmap.png" alt="Image 4" />
         <span>Roadmap</span>
       </div>
@@ -190,7 +190,7 @@
       layerPopup.style.display = layerPopup.style.display === 'none' ? 'table-cell' : 'none';
     });
 
-    /*
+    
     const baseImage = layerToggle.querySelector('img');
     baseImage.setAttribute('src', 'media/roadmap.png');
     
@@ -200,7 +200,6 @@
     const roadmapLayer = document.getElementById('roadmap');
     const swisstopobw = document.getElementById('swisstopoBW');
     const swisstopoColor = document.getElementById('swisstopoColor');
-    const swissimageCurrent = document.getElementById('swissimageCurrent');
     const dufour = document.getElementById('dufour');
     
     satelliteLayer.addEventListener('click', () => {
@@ -228,11 +227,6 @@
       changeLayer("dufour")
     });
 
-    swissimageCurrent.addEventListener('click', () => {
-      baseImage.setAttribute('src', 'media/swissimageCurrent.png');
-      layerPopup.style.display = 'none';
-      changeLayer("swissimageCurrent")
-    });
     
     swisstopoColor.addEventListener('click', () => {
       console.log("passe")
@@ -241,7 +235,7 @@
       changeLayer("swisstopoColor")
     });
     
-*/
+
   </script>
 </body>
 </html>
