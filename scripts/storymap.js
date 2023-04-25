@@ -432,26 +432,42 @@ function changeLayer(layer){
   if(layer){
 
     if(layer === "satellite"){ //set the layer to satellitre
-
       cleanLayers()
+      L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
       L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg', {}).addTo(map);
   
     }else if(layer === "roadmap"){ //set layer to roadmap
-  
       cleanLayers()
       L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
   
     }else if(layer === "swisstopoBW"){ //set layer to swisstopo
-  
       cleanLayers()
       L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
       L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/3857/{z}/{x}/{y}.jpeg', {}).addTo(map)
       
     }else if(layer === "terrain"){ //set layer to terrain
-  
+
       cleanLayers()
       L.tileLayer.wms('wmts{s}.geo.admin.ch/1.0.0/ch.swisstopo.hiks-dufour/default/18650101/3857/{z}/{x}/{y}.png', {}).addTo(map);
+
+    }else if("swisstopoColor"){
+      cleanLayers()
+      L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
+      L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg', {}).addTo(map)
+
+    }else if("swissimageCurrent"){
+      cleanLayers()
+      L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
+      L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg', {}).addTo(map)
+      
+    }else if("dufour"){
+      cleanLayers()
+      L.tileLayer('https://api.maptiler.com/maps/basic-3857/{z}/{x}/{y}.png?key=LKwqCkKZyNRvQMMYWvzo', {}).addTo(map);
+      L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.hiks-siegfried/default/current/3857/{z}/{x}/{y}.jpeg', {}).addTo(map)
+      
     }
+
+    
   }
 
 }

@@ -158,12 +158,14 @@ a.source:visited {
   max-height: 100%;
   max-width: 100%;
   vertical-align: middle;
+
 }
 
 #header {
   padding: 5px 0;
   text-align: center;
   color: #333;
+
 }
 
 /* Storymap title & subtitle */
@@ -179,91 +181,85 @@ h2 {
 }
 
 
-#layout-switcher {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-  background-color: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-#layout-switcher label {
-  margin-right: 10px;
-}
-
-
 #map-layers {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  z-index: 999;
 }
 
 /*css for the layer selector*/
 #layer-toggle {
-  margin-left: 29%;
-  margin-top: 36%;
-
+  left: 29%;
+  bottom: 5%;
   height: 15%;
   aspect-ratio: 1;
   border-radius: 10px;
-  background-color: white;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  border: 5px solid white;
+  box-shadow: 0px 0px 5px rgb(210, 210, 210);
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
-  z-index: 9998;
+  z-index: 99;
+  overflow: hidden;
 }
 
 #layer-toggle img {
-
-  width: 100%;
-  height: 100%;
-  position: absolute;
   top: 0;
   left: 0;
-  border-radius: 10px;
-  z-index: 9998;
+  z-index: 100;
 }
 
 #layer-popup {
-  position: absolute;
-  margin-top: 30%;
-  margin-left: 29%;
-  width: 120px;
-  padding: 10px;
+  left: 29%;
+  bottom: 5%;
+  width: 70vw;
+  height: 40vw;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 0;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   display: none;
-  z-index: 9999;
-
+  z-index: 101;
+  max-width: 100%;
+  position: absolute;
 }
 
-
-#layer-popup div {
-
+/* Style pour la grille de tableaux */
+.grid {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 5px;
-  cursor: pointer;
-  z-index: 9999;
-
+  width: 100%;
+  height: 50%;
+  border: none;
 }
 
-#layer-popup div img {
-
-  width: 25px;
-  height: 25px;
-  margin-right: 5px;
+/* Style pour chaque cellule de tableau */
+.cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% / 6); /* Three cells per row */
+  border: none; /* Supprime les bordures */
+  padding: 2%;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
-#layer-popup div span {
+/* Style pour chaque nom */
+.cell span {
+  margin-top: 9%;
+  margin-bottom: 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
 
-  font-size: 14px;
+/* Style pour chaque image */
+.cell img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
 }

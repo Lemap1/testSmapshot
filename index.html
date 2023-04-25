@@ -59,21 +59,49 @@
   <div id="layer-toggle">
     <img src="media/roadmap.png" alt="Map layer toggle button">
   </div>
-  
+
+
+
   <div id="layer-popup">
-    <div id="swisstopo-satellite">
-      <img src="media/swisstopo-satellite.png">
-      <span>Satellite</span>
+    <div class="grid">
+      <div class="cell">
+        <img src="media/swisstopoBW.png" alt="Image 1" />
+        <span>Swisstopo noir & blanc</span>
+      </div>
+      <div class="cell">
+        <img src="media/swisstopoColor.png" alt="Image 2" />
+        <span>Swisstopo couleur</span>
+      </div>
+      <div class="cell">
+        <img src="media/swissimageCurrent.png" alt="Image 3" />
+        <span>Swissimage actuel</span>
+      </div>
+      <div class="cell">
+        <img src="media/swissimage1946.png" alt="Image 4" />
+        <span>Swissimage 1946</span>
+      </div>
+      <div class="cell">
+        <img src="media/dufour.png" alt="Image 4" />
+        <span>Dufour</span>
+      </div>
+      <div class="cell">
+        <img src="media/king-1963-npr.jpg" alt="Image 4" />
+        <span>Siegfied</span>
+      </div>
     </div>
-    <div id="roadmap-layer">
-      <img src="media/roadmap.png">
-      <span>Roadmap</span>
+    <br><h1>Monde</h1>
+    <div id="grid">
+
+      <div class="cell">
+        <img src="media/roadmap.png" alt="Image 4" />
+        <span>Roadmap</span>
+      </div>
     </div>
-    <div id="swisstopoBW">
-      <img src="media/swisstopoBW.png">
-      <span>Swisstopo noir et blanc</span>
-    </div>
+
+    
   </div>
+    
+  
 
   <div id="map"></div>
 
@@ -94,6 +122,7 @@
       crs: L.CRS.EPSG3857
     });
     
+    /*
     document.addEventListener('keydown', event => {//used to disable when arrow up or down clicked to change the layout for the map
 
       let column = document.getElementById("column") 
@@ -114,6 +143,7 @@
       }
       
     });
+    */
     
     /**
     *Method used for the buttons to change the chapter displayed
@@ -155,16 +185,23 @@
     
     const layerToggle = document.getElementById('layer-toggle');
     const layerPopup = document.getElementById('layer-popup');
+    layerToggle.addEventListener('click', () => {
+      console.log("passe")
+      layerPopup.style.display = layerPopup.style.display === 'none' ? 'table-cell' : 'none';
+    });
+
+    /*
     const baseImage = layerToggle.querySelector('img');
     baseImage.setAttribute('src', 'media/roadmap.png');
     
-    layerToggle.addEventListener('click', () => {
-      layerPopup.style.display = layerPopup.style.display === 'none' ? 'block' : 'none';
-    });
+
     
     const satelliteLayer = document.getElementById('swisstopo-satellite');
-    const roadmapLayer = document.getElementById('roadmap-layer');
+    const roadmapLayer = document.getElementById('roadmap');
     const swisstopobw = document.getElementById('swisstopoBW');
+    const swisstopoColor = document.getElementById('swisstopoColor');
+    const swissimageCurrent = document.getElementById('swissimageCurrent');
+    const dufour = document.getElementById('dufour');
     
     satelliteLayer.addEventListener('click', () => {
       baseImage.setAttribute('src', 'media/swisstopo-satellite.png');
@@ -185,9 +222,26 @@
       changeLayer("swisstopoBW")
     });
     
-    addEventListener("focus", (event) => {});
+    dufour.addEventListener('click', () => {
+      baseImage.setAttribute('src', 'media/dufour.png');
+      layerPopup.style.display = 'none';
+      changeLayer("dufour")
+    });
 
-
+    swissimageCurrent.addEventListener('click', () => {
+      baseImage.setAttribute('src', 'media/swissimageCurrent.png');
+      layerPopup.style.display = 'none';
+      changeLayer("swissimageCurrent")
+    });
+    
+    swisstopoColor.addEventListener('click', () => {
+      console.log("passe")
+      baseImage.setAttribute('src', 'media/swisstopoColor.png');
+      layerPopup.style.display = 'none';
+      changeLayer("swisstopoColor")
+    });
+    
+*/
   </script>
 </body>
 </html>
