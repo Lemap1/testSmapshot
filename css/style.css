@@ -228,58 +228,61 @@ h2 {
   z-index: 101;
   max-width: 100%;
   position: absolute;
+  overflow: scroll;
 }
 
 /* Style pour la grille de tableaux */
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 50%;
-  border: none;
-
-}
-
 /* Style pour chaque cellule de tableau */
 .cell {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: calc(100% / 6); /* Six cells per row */
+  width: 17%; /* Six cells per row */
   border: none; /* Supprime les bordures */
-  padding: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-top: 2%;
   box-sizing: border-box; /* Include padding in width calculation */
+}
 
+/* Aligner les cellules sur la gauche lorsque la ligne change */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Change justify-content from center to flex-start */
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  border: none;
+  margin-bottom: 4%;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 /* Style pour chaque nom */
 .cell span {
   margin-bottom: 0;
-  margin-top: 2%;
-  font-size: 1.2rem;
+  padding-top: 2%;
+  font-size: 1rem;
   text-align: center;
 }
 
 /* Style pour chaque image */
 .cell img {
   display: block;
-  max-width: 100%;
+  max-width: 70%;
+  padding: 3%;
   height: auto;
   vertical-align: middle;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  border-width: 10px;
 }
 
-/*Utilisé pour le boutton fermer de la popup des filtres*/
-/*#fermer{
-  top: 0;
-  right: 0;
-  width: 5%;
-  height: 5%;
-  position: absolute;
-}*/
 
+/*Utilisé pour le boutton fermer de la popup des filtres*/
 #fermer {
   position: absolute;
   right: 0;
@@ -306,5 +309,3 @@ h2 {
 #fermer:after {
   transform: rotate(-45deg);
 }
-
-/*Style for the swich of the popup*/

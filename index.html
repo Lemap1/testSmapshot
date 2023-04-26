@@ -64,8 +64,8 @@
   <!-- Popup for the layer selection-->
   <div id="layer-popup" onclick="fermer">
     <p id="fermer" onclick="fermer">
-    <h1 style="margin-left: 2%; margin-top:3%;">Suisse :</h1>
-    <div class="grid">
+    <h1 id="titleSwiss" style="margin-left: 2%; margin-top:3%;"><img src="media/arrowRight.png" id="arrowSuisse" class="arrowSuisse" style="transform: rotate(90deg)">Suisse :</h1>
+    <div id="layersSwiss" class="grid">
       <div id="swisstopoBW" class="cell">
         <img src="media/swisstopoBW.png"/>
         <span>Swisstopo noir & blanc</span>
@@ -92,23 +92,19 @@
       </div>
     </div>
 
-    <input type="checkbox" id="layerOfImageDate"> <label>Afficher les layers des années des photos</label>
+    <input type="checkbox" id="layerOfImageDate" style="margin-left: 3.5%; margin-bottom:2%"> <label>Afficher les cartes des années de prise des photos</label>
 
     
     
-    <h1 style="margin-left: 2%;">Monde :</h1>
-    <div id="grid">
+    <h1 id="titleWorld" style="margin-left: 2%;"><img src="media/arrowRight.png" id="arrowMonde" class="arrowMonde" style="transform: rotate(90deg)">Monde :</h1>
+    <div id="layersWorld" class="grid">
       <div id="roadmap" class="cell">
         <img src="media/roadmap.png" alt="Image 4" />
         <span>Roadmap</span>
       </div>
     </div>
-
-    
   </div>
     
-  
-
   <div id="map"></div>
 
   <script type="text/javascript" src="google-doc-url.js"></script>
@@ -116,7 +112,6 @@
   <script type="text/javascript" src="scripts/constants.js"></script>
   <script type="text/javascript" src="scripts/jquery.csv.js"></script>
   <script type="text/javascript" src="scripts/storymap.js"></script>
-
   <script>
     // Create the Leaflet map with a generic start point
     var map = L.map('map', {
@@ -255,6 +250,32 @@
     });
     
 
+    const titleWorld = document.getElementById('titleWorld');
+    const layersWorld = document.getElementById('layersWorld');
+    const arrowMonde = document.getElementById('arrowMonde')
+    titleWorld.addEventListener('click', function() {
+      if (arrowMonde.style.transform === 'rotate(90deg)') {
+        arrowMonde.style.transform = 'rotate(0deg)'
+        layersWorld.style.display = 'none'
+      } else {
+        arrowMonde.style.transform = 'rotate(90deg)'
+        layersWorld.style.display = 'flex'
+      }
+    });
+
+    const titleSwiss = document.getElementById('titleSwiss');
+    const layersSwiss = document.getElementById('layersSwiss');
+    const arrowSuisse = document.getElementById('arrowSuisse')
+    titleSwiss.addEventListener('click', function() {
+      if (arrowSuisse.style.transform === 'rotate(90deg)') {
+        arrowSuisse.style.transform = 'rotate(0deg)'
+        layersSwiss.style.display = 'none'
+
+      } else {
+        arrowSuisse.style.transform = 'rotate(90deg)'
+        layersSwiss.style.display = 'flex'
+      }
+    });
   </script>
 </body>
 </html>

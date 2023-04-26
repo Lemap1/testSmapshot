@@ -43,7 +43,6 @@ function initMap(options, chapters) {
 
   createDocumentSettings(options);
 
-  var chapterContainerMargin = 70;
 
   document.title = getSetting('_mapTitle');
   $('#header').append('<h1>' + (getSetting('_mapTitle') || '') + '</h1>');
@@ -61,7 +60,7 @@ function initMap(options, chapters) {
   // Load tiles
   addBaseMap();
 
-  var markActiveColor = function(k) {
+  let markActiveColor = function(k) {
     /* Removes marker-active class from all markers */
     for (var i = 0; i < markers.length; i++) {
       if (markers[i] && markers[i]._icon) {
@@ -75,33 +74,33 @@ function initMap(options, chapters) {
     }
   }
 
-  var pixelsAbove = [];
-  var chapterCount = 0;
+  let pixelsAbove = [];
+  let chapterCount = 0;
 
-  var currentlyInFocus; // integer to specify each chapter is currently in focus
-  var overlay;  // URL of the overlay for in-focus chapter
-  var geoJsonOverlay;
+  let currentlyInFocus; // integer to specify each chapter is currently in focus
+  let overlay;  // URL of the overlay for in-focus chapter
+  let geoJsonOverlay;
 
   chapters = jsonToObject(chapters)
   .then(chapters =>{
   for (i in chapters) {
-    var c = chapters[i];
+    let c = chapters[i];
 
     chapterCount = addMarker(c, chapterCount)
   
     // Add chapter container
-    var container = $('<div></div>', {
+    let container = $('<div></div>', {
       id: 'container' + i,
       class: 'chapter-container'
     });
   
   
     // Add media and credits: YouTube, audio, or image
-    var media = null;
-    var mediaContainer = null;
+    let media = null;
+    let mediaContainer = null;
   
     // Add media source
-    var source = '';
+    let source = '';
     if (c.Media_Credit_Link) {
       source = $('<a>', {
         text: c.Media_Credit,
@@ -133,7 +132,7 @@ function initMap(options, chapters) {
     }
   
     // If not YouTube: either audio or image
-    var mediaTypes = {
+    let mediaTypes = {
       'jpg': 'img',
       'jpeg': 'img',
       'png': 'img',
@@ -144,8 +143,8 @@ function initMap(options, chapters) {
       'wav': 'audio',
     }
   
-    var mediaExt = c.Media_Link ? c.Media_Link.split('.').pop().toLowerCase() : '';
-    var mediaType = mediaTypes[mediaExt];
+    let mediaExt = c.Media_Link ? c.Media_Link.split('.').pop().toLowerCase() : '';
+    let mediaType = mediaTypes[mediaExt];
   
     if (mediaType) {
       media = $('<' + mediaType + '>', {
@@ -182,7 +181,7 @@ function initMap(options, chapters) {
   //changeAttribution();
 
   /* Change image container heights */
-  imgContainerHeight = parseInt(getSetting('_imgContainerHeight'));
+  let imgContainerHeight = parseInt(getSetting('_imgContainerHeight'));
   if (imgContainerHeight > 0) {
     $('.img-container').css({
       'height': imgContainerHeight + 'px',
