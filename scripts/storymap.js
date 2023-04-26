@@ -298,6 +298,22 @@ function initMap(options, chapters) {
             animate: true,
             duration: 2, // default is 2 seconds
           });
+
+          let checkbox = document.getElementById("layerOfImageDate")
+
+          //Automaticly change layer if change according to photo date selected in layer filter menu
+          if(checkbox.checked){
+            console.log(typeof c.date_shot_min)
+            if(parseInt(c.date_shot_min.replace(/\s/g, "")) >= 1844 && parseInt(c.date_shot_min.replace(/\s/g, "")) <= 2021){
+              console.log("change layer : " + c.date_shot_min)
+              cleanLayers()
+              L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.zeitreihen/default/'+ parseInt(c.date_shot_min.replace(/\s/g, "")) +'1231/3857/{z}/{x}/{y}.png', {}).addTo(map);
+            }else if(parseInt(c.date_shot_max.replace(/\s/g, "")) > 1844 && parseInt(c.date_shot_min.replace(/\s/g, "")) <= 2021){
+              console.log("change layer : " + c.date_shot_max)
+              cleanLayers()
+              L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.zeitreihen/default/'+ parseInt(c.date_shot_max.replace(/\s/g, "")) +'1231/3857/{z}/{x}/{y}.png', {}).addTo(map);
+            }
+          }
         }
 
         // No need to iterate through the following chapters
@@ -532,10 +548,8 @@ function changeChapters(){
       map.removeLayer(layer);
     });
 
-    console.log('passe0')
     let title = document.getElementById("title")
     let narration = document.getElementById("narration")
-    console.log("passe1")
     title.innerHTML = `
     <button onclick="go('left')"><</button>
     <select id="actualChapter" onchange="changeChapters()">
@@ -554,7 +568,6 @@ function changeChapters(){
       <div id="top"></div>
     </div>`
     
-    console.log("passe2")
 
     // First, try reading Options.csv
     $.get('csv/Options.csv', function(options) {
@@ -584,8 +597,7 @@ function changeChapters(){
 class Chapter{
      
   constructor(Chapter, Media_Link, Media_Credit, Media_Credit_Link, Description, Zoom, Marker, Marker_Color, Location, Latitude, Longitude, Overlay, Overlay_Transparency,
-    GeoJSON_Overlay,
-    GeoJSON_Feature_Properties){
+    GeoJSON_Overlay, GeoJSON_Feature_Properties, date_shot_min, date_shot_max){
       this.Chapter = Chapter
       this.Media_Link = Media_Link
       this.Media_Credit = Media_Credit
@@ -601,6 +613,9 @@ class Chapter{
       this.Overlay_Transparency = Overlay_Transparency
       this.GeoJSON_Overlay = GeoJSON_Overlay
       this.GeoJSON_Feature_Properties = GeoJSON_Feature_Properties
+      this.date_shot_min = date_shot_min.toLocaleString("default", { year: "numeric" });
+      this.date_shot_max = date_shot_max.toLocaleString("default", { year: "numeric" });
+
       
   }
 
@@ -701,8 +716,11 @@ class Chapter{
         item.Overlay,
         item.Overlay_Transparency,
         item.GeoJSON_Overlay,
-        item.GeoJSON_Feature_Properties
+        item.GeoJSON_Feature_Properties,
+        parseInt(data.date_shot_min.split("-")[0]),
+        parseInt(data.date_shot_max.split("-")[0])
       );
+      console.log(parseInt(data.date_shot_max.split("-")[0]))
       return chapter;
     });
 

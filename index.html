@@ -61,9 +61,10 @@
   </div>
 
 
-
-  <div id="layer-popup">
-    <h1 style="margin-left: 5%; margin-top:3%;">Suisse :</h1>
+  <!-- Popup for the layer selection-->
+  <div id="layer-popup" onclick="fermer">
+    <p id="fermer" onclick="fermer">
+    <h1 style="margin-left: 2%; margin-top:3%;">Suisse :</h1>
     <div class="grid">
       <div id="swisstopoBW" class="cell">
         <img src="media/swisstopoBW.png"/>
@@ -90,7 +91,12 @@
         <span>Siegfied</span>
       </div>
     </div>
-    <h1 style="margin-left: 5%;">Monde :</h1>
+
+    <input type="checkbox" id="layerOfImageDate"> <label>Afficher les layers des années des photos</label>
+
+    
+    
+    <h1 style="margin-left: 2%;">Monde :</h1>
     <div id="grid">
       <div id="roadmap" class="cell">
         <img src="media/roadmap.png" alt="Image 4" />
@@ -182,12 +188,21 @@
       }
     }
    
-    
+    //Used for closing or opening the popup
     const layerToggle = document.getElementById('layer-toggle');
     const layerPopup = document.getElementById('layer-popup');
+    const buttonClosePopup = document.getElementById("fermer")
+
+    //close or open the map when filter button is clicked
     layerToggle.addEventListener('click', () => {
       console.log("passe")
       layerPopup.style.display = layerPopup.style.display === 'none' ? 'table-cell' : 'none';
+    });
+    
+    //close the popup when the close button is clicked inside the popup
+    fermer.addEventListener('click', () => {
+      console.log("passe")
+      layerPopup.style.display = 'none'
     });
 
     
@@ -202,6 +217,7 @@
     const swisstopoColor = document.getElementById('swisstopoColor');
     const dufour = document.getElementById('dufour');
     
+    //listener for click on layer satelllite inside popup
     satelliteLayer.addEventListener('click', () => {
       baseImage.setAttribute('src', 'media/swisstopo-satellite.png');
       layerPopup.style.display = 'none';
@@ -209,25 +225,28 @@
 
     });
     
+    //listener for click on layer roadmap inside popup
     roadmapLayer.addEventListener('click', () => {
       baseImage.setAttribute('src', 'media/roadmap.png');
       layerPopup.style.display = 'none';
       changeLayer("roadmap")
     });
     
+    //listener for click on layer swisstopo black and white inside popup
     swisstopobw.addEventListener('click', () => {
       baseImage.setAttribute('src', 'media/swisstopoBW.png');
       layerPopup.style.display = 'none';
       changeLayer("swisstopoBW")
     });
     
+    //listener for click on layer dufour 1865 inside popup
     dufour.addEventListener('click', () => {
       baseImage.setAttribute('src', 'media/dufour.png');
       layerPopup.style.display = 'none';
       changeLayer("dufour")
     });
 
-    
+    //listener for click on layer swisstopo color inside popup
     swisstopoColor.addEventListener('click', () => {
       console.log("passe")
       baseImage.setAttribute('src', 'media/swisstopoColor.png');
